@@ -1,9 +1,11 @@
 # Reverse-engineering _SONGS.BIN_<br>from the MS-DOS version of Test Drive 2
 
-Below you will find the results of my research since the beginning of this reverse-engineering project in 2017.
+_Below you will find the results of my research since the beginning of this reverse-engineering project in 2017._
+_This is a hobby project that I came back to after 9 years of hiatus, after I found some old screenshots and text files._ <br>
+_Given this, possible updates to this page might be slow to come. I am publishing this only to , and just in case someone else also gets the idea to play around with this old game's files._
 
-__NOTE: _Grand Prix Circuit_, another Accolade game, seems to share this data format in its MUSIC.BIN__ <br>
-__You may consider this documentation effective for that game as well, but it's been untested.__
+__NOTE: _Grand Prix Circuit_, another Accolade game, seems to share a similar data layout in its MUSIC.BIN at first glance.__ <br>
+__You may consider this documentation as starting grounds if you want to work on that game instead, but it hasn't been tested.__
 
 ## About the file and its format
 _SONGS.BIN_ contains the music tracks used by TD2: The Duel. At the core, the songs are similarly structured to tracker music, with patterns referenced by sequencers.<br>
