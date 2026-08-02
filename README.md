@@ -20,8 +20,8 @@ Thus, the format can be divided into the following 3 groups:
 The file starts with five groups of 4 bytes. In these groups, the first address is a pointer to the start of the sequencer roll.
 - The first and fifth groups are full zeroes. They _might_ be markers for the start and end of track data.
 - The second group points to the title music of the game that plays in the intro/main menu/gas station intermissions.
-- The third group starts playing during the ending cutscene, before the player is handcuffed.
-- The fourth group plays when the player gets handcuffed in said cutscene.
+- The third group plays during the ending cutscene, when the player is handcuffed.
+- The fourth group also plays during the ending, but until the player is handcuffed.
  
 _Excerpt from the beginning of SONGS.BIN:_ <br>
 00 00 00 00 / 14 00 00 00 / 68 00 00 00 / 77 00 00 00 / 00 00 00 00
