@@ -59,21 +59,18 @@ Further experimentation is necessary to find the maximum value the game can hand
 The note length is treated like a multiplier for the song tempo value, 1 being the smallest length unit you can use. <br>
 _(Please see __0xFExx - Tempo command__ in the command list below for further details about how they work together.)_
 
-### Control commands _(incomplete list)_
+### Control commands
 
-__0xFB00 - FURTHER RESEARCH NEEDED__ <br>
-__Might be some kind of Stop or EOF marker...__ <br>
-Only appears once at the end of SONGS.BIN, but doesn't seem to have any direct references to it from any of the original tracks. <br>
-This command causes the music to go dead silent with no looping. Possibly an End-of-File marker?
+__0xFB00 - End of Track marker__ <br>
+This marker causes the music to end without looping.
 
 __0xFC00 - End of Pattern marker__ <br>
-Call this at the end of each pattern. Causes the game to jump to the next sequence in the sequencer list.
+This marker must be called at the end of each pattern. Causes the game to jump to the next sequence in the sequencer list.
 
-__0xFDxx - FURTHER RESEARCH NEEDED__ <br>
-__Possibly an inverted Vibrato command?__ <br>
-I'm uncertain about its true purpose. If you don't put this at the beginning of your pattern, the notes will have a really fast and shaky vibrato on them. <br>
-The default TD2 songs call 0xFD with a value of 1, but testing any other value did not result in any deviation from its behavior. <br>
-The playback would also sometimes get glitchy in Dosbox during my experiments without this command, but YMMV.
+__0xFDxx - Voice selector marker__ <br>
+This marker selects an instrument from VOICES.BIN. While TD2's tracks like to call it with the parameter 0x01, its VOICES.BIN is only 2 bytes long. <br>
+On the contrary, Grand Prix Circuit has a much more complete VOICES.BIN (288 bytes), and __its reverse-engineering is currently in progress.__ <br>
+If this command is not called at the beginning of a pattern, the notes will have a really fast and shaky vibrato on them, as well as a premature staccato-like end. <br>
 
 __0xFExx - Tempo command__ <br>
 Contrary to conventional understanding of musical tempo, the 0xFE command operates inversely by defining the duration of each note in the track. A higher value results in longer notes overall, thus a slower tempo. <br>
@@ -89,5 +86,5 @@ In the original SONGS.BIN, there's a "pattern" that only contains this marker, a
 _The following example is taken from address 0x86 onwards (First pattern of title song):_ <br>
 FE 07 / FD 01 / 17 02 / 0B 02 / 1A 02 / 0B 02 / 19 02 / 0B 02 / 15 02 / 17 02 / 0B 02 / 12 02 / 1A 02 / 0B 02 / 19 02 / 0B 02 / 15 02 / 17 02 / FC 00
 
-In the above example, you can observe the _Tempo_ command __(0xFE)__ as well as the _elusive_ __0xFD01__ being used at the beginning of the pattern, with the _End of Pattern_ marker __(0xFC00)__ being the last command. <br>
+In the above example, you can observe the _Tempo_ marker __(0xFE)__ as well as the _Voice selector_ __0xFD01__ being used at the beginning of the pattern, while the _End of Pattern_ marker __(0xFC00)__ is the last command. <br>
 Everything in-between these commands is a note/length byte pair.
