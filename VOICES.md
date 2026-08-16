@@ -3,13 +3,13 @@
 
 The `VOICES.BIN` file is used by **Grand Prix Circuit** (and supported by **Test Drive II: The Duel**, albeit seemingly not used by default) to define simple individual "voices" with different characteristics.
 
-Each voice occupies 32 bytes in the file. The music definition files `SONGS.BIN` (TD2) and `MUSIC.BIN` (GPC) select a voice in a pattern using the `0xFD xx` command, where `xx` is the voice index starting from 0.
+Each voice occupies 32 bytes in the file. The music definition files [`SONGS.BIN`](SONGS.md) (TD2) and [`MUSIC.BIN`](SONGS.md) (GPC) select a voice in a pattern using the `0xFD xx` command, where `xx` is the voice index starting from 0.
 
 While the record is 32 bytes long, the game only copies **28 bytes** into memory. __The last 4 bytes are unused__ and might be padding bytes.
 
 Based on the results of my experiments, modders seeking to create custom voices __may use these 4 bytes for naming purposes__ with no adverse effects to the game.
 
-__NOTE: __ As with `SONGS.BIN`, __Little Endian__ ordering is used.
+__NOTE: __ As with [`SONGS.BIN`](SONGS.md), __Little Endian__ ordering is used.
 
 __NOTE:__ The timings given in this file (i.e. Arpeggiator and LFO step dividers, sizes, etc.) are __independent__ of the music file's `0xFE` tempo command!
 
@@ -253,7 +253,7 @@ As the game does not load these bytes to memory, they may be freely used to name
 
 ### A specific observation about Test Drive 2
 
-Despite TD2's `SONGS.BIN` making several calls to Voice #1 via `0xFD 01`, the stock `VOICES.BIN` that comes with the game only contains 2 bytes: `0D 0A`. It is unclear if Test Drive 2 had its voice definitions compiled into the .exe, but replacing its `VOICES.BIN` with the 288 byte version from Grand Prix Circuit confirms that the game WILL load voices from the external file if it contains valid definitions.
+Despite TD2's [`SONGS.BIN`](SONGS.md) making several calls to Voice #1 via `0xFD 01`, the stock `VOICES.BIN` that comes with the game only contains 2 bytes: `0D 0A`. It is unclear if Test Drive 2 had its voice definitions compiled into the .exe, but replacing its `VOICES.BIN` with the 288 byte version from Grand Prix Circuit confirms that the game WILL load voices from the external file if it contains valid definitions.
 
 ### Current state and usefulness of this document
 
