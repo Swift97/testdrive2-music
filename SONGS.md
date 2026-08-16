@@ -80,7 +80,7 @@ This marker must be called at the end of each pattern. Causes the game to jump t
 __`0xFD xx` - Voice selector marker__
 
 This marker selects an instrument from `VOICES.BIN`, where xx is the instrument index starting from 0.
->_Please refer to VOICES.md for more information about its format._
+>_Please refer to [`VOICES.md`](VOICES.md) for more information about its format._
 
 ---
 
