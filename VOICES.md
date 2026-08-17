@@ -9,7 +9,7 @@ While the record is 32 bytes long, the game only copies **28 bytes** into memory
 
 Based on the results of my experiments, modders seeking to create custom voices __may use these 4 bytes for naming purposes__ with no adverse effects to the game.
 
-__NOTE: __ As with [`SONGS.BIN`](SONGS.md), __Little Endian__ ordering is used.
+__NOTE:__ As with [`SONGS.BIN`](SONGS.md), __Little Endian__ ordering is used.
 
 __NOTE:__ The timings given in this file (i.e. Arpeggiator and LFO step dividers, sizes, etc.) are __independent__ of the music file's `0xFE` tempo command!
 
