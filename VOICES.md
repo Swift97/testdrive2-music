@@ -170,7 +170,7 @@ It is recommended that you set this byte to zero.
 
 ### `0x16, 0x17` --- LFO excursion step size
 
-A 16-bit integer value that the LFO increments by on every update.
+A 16-bit integer value that the LFO increments on every update.
 
 Unlike _step dividers_, __a higher value makes the excursion traverse its range more quickly.__
 
