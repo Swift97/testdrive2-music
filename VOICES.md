@@ -251,7 +251,7 @@ As the game does not load these bytes to memory, they may be freely used to name
 
 # Author's remarks
 
-### A specific observation about Test Drive 2
+### A specific observation about Test Drive 2's VOICES.BIN
 
 Despite TD2's [`SONGS.BIN`](SONGS.md) making several calls to Voice #1 via `0xFD 01`, the stock `VOICES.BIN` that comes with the game only contains 2 bytes: `0D 0A`. It is unclear if Test Drive 2 had its voice definitions compiled into the .exe, but replacing its `VOICES.BIN` with the 288 byte version from Grand Prix Circuit confirms that the game WILL load voices from the external file if it contains valid definitions.
 
