@@ -12,9 +12,9 @@ The file format can be divided into the following 3 groups:
 ---
 
 ## Group 1 - Track pointers
-The track pointer section is made up of __groups of 4 bytes__. At its beginning/end, a value of `00 00 00 00` serves as a marker. Each of the 4-byte groups in-between serve as pointers to the start of the sequencer roll for each track that's used by the game.
+The track pointer section is made up of __groups of 4 bytes__. In both games, the track data area begins and ends with `00 00 00 00`. Each of the 4-byte groups in-between serve as pointers to the start of the sequencer roll for each track that's used by the game.
 
-As this behavior is shared between TD2 and GPC, they _might_ be markers for the start and end of track data.
+_While the `00 00 00 00` blocks MIGHT be unused track pointers, they can be utilized to autodetect the start/end of track data in a custom player/editor for indexing purposes. This use case is compatible with both games._
 
 ### List of TD2/GPC tracks:
 
@@ -27,9 +27,12 @@ As this behavior is shared between TD2 and GPC, they _might_ be markers for the 
 | GPC  |   #2  |        `05 01 00 00`       | Intro / Ending     |
  
 >_Raw data from the beginning of TD2's SONGS.BIN:_
+>
 >`00 00 00 00 / 14 00 00 00 / 68 00 00 00 / 77 00 00 00 / 00 00 00 00`
+>
 >From this example, we can see that the group begins and ends with `00 00 00 00`.
->Between the markers, the title song's first sequence is defined as address `0x14`, the 1st part of the ending song as `0x68`, and the 2nd part as `0x77`.
+>
+>Between these "markers", the title song's first sequence is accessed at offset `0x14`, the ending song's at `0x68`, and the handcuff song's at `0x77`.
 
 ---
 
@@ -41,8 +44,10 @@ The sequencer data is made up of __groups of 3 bytes__.
 
 __IMPORTANT:__ During reverse-engineering experiments, I've found that a transpose value of 0 may break playback in-game. Further experimentation necessary.
 
->_The following example is taken from address `0x14` onwards (title song):_
+>_The following example is taken from TD2's address `0x14` onwards (title song):_
+>
 >`86 00 05 / AC 00 05 / CE 00 05 / CE 00 05`
+>
 >Looking at the first group, we can see that it plays the pattern starting at address `0x0086` with a +5 semitone transposition.
 
 ---
@@ -55,11 +60,14 @@ Various control commands are also used in this area.
 __IMPORTANT:__ The first pattern __MUST__ start with the Tempo command __`0xFE`__ which will be detailed in the "__Control Commands__" list below.
 
 ### Musical notes
-* __Note ID:__ The lowest ID 1 corresponds to D#2. Each successive note is one semitone higher. <br>
+* __Note ID:__ The lowest audible ID is `0x01`, which corresponds to `D#2`. Each successive note is one semitone higher.
+* * An ID of `0x00` indicates a rest.
 >Further experimentation is necessary to find the maximum value the game can handle, but somewhere around `value 0x4F`, playback might start to break. Try not to exceed this pitch, especially if you're transposing your pattern in the sequencer roll or using a custom `VOICES.BIN` definition that has a wild arpeggiator on it.
+>
+>__Additional note regarding `0x00`:__ this value sometimes gave me unstable behavior when the __`0xFD`__ voice selector marker was not called beforehand, so take caution.
 
-* __Length:__ The note length is treated like a multiplier for the song tempo value, 1 being the smallest length unit you can use.
->_(Please see __`0xFE xx - Tempo command`__ in the command list below for further details about how they work together.)_
+* __Length:__ The note length is treated like a multiplier for the song tempo value, `0x01` being the smallest value you can use.
+>_(Please see __`0xFE xx - Tempo command`__ in the command list below for further details about how the duration is determined.)_
 
 ---
 
@@ -80,11 +88,15 @@ This marker must be called at the end of each pattern. Causes the game to jump t
 __`0xFD xx` - Voice selector marker__
 
 This marker selects an instrument from `VOICES.BIN`, where xx is the instrument index starting from 0.
->_Please refer to [`VOICES.md`](VOICES.md) for more information about its format._
+
+__IMPORTANT:__ Make sure you call this at least once at the beginning of the track, as this value seems to persist through gameplay and escaping to the menu. If you don't call this at the start, the last voice that was indexed in any track that was playing may STILL be in use!
+
+>_Please refer to the [`VOICES.md`](VOICES.md) document for more information about how voices are defined._
 
 ---
 
-__`0xFE xx` - Tempo command__ <br>
+__`0xFE xx` - Tempo command__
+
 While this document refers to it as "tempo", it's more of a timer divider that affects the duration of each note in the track. __A higher value results in longer notes overall, thus a slower tempo.__
 
 The value roughly corresponds to the on-time of a note of length=1, and is __APPROXIMATELY__ given in millisecs/10, give or take.
@@ -99,7 +111,8 @@ __`0xFF 00` - Loop Music marker.__
 
 Called at the very end of the track. Causes the game to loop back to the first sequence in the arranger.
 
->_The following example is taken from address 0x86 onwards (First pattern of title song):_
+>_The following example is taken from TD2's address 0x86 onwards (First pattern of title song):_
+>
 >`FE 07 / FD 01 / 17 02 / 0B 02 / 1A 02 / 0B 02 / 19 02 / 0B 02 / 15 02 / 17 02 / 0B 02 / 12 02 / 1A 02 / 0B 02 / 19 02 / 0B 02 / 15 02 / 17 02 / FC 00`
 
 In the above example, you can observe the _Tempo_ marker `0xFE` as well as the _Voice selector_ `0xFD01` being used at the beginning of the pattern, while the _End of Pattern_ marker `0xFC00`__ is the last command.
