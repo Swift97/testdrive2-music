@@ -40,9 +40,7 @@ _While the `00 00 00 00` blocks MIGHT be unused track pointers, they can be util
 The sequencer data is made up of __groups of 3 bytes__.
 
 - The first and second bytes serve as the Little Endian uint16 address of the pattern to be played.
-- The third byte is a transpose value that's applied to whole pattern.
-
-__IMPORTANT:__ During reverse-engineering experiments, I've found that a transpose value of 0 may break playback in-game. Further experimentation necessary.
+- The third byte is an upwards transposition value that's applied to whole pattern, given in semitones.
 
 >_The following example is taken from TD2's address `0x14` onwards (title song):_
 >
