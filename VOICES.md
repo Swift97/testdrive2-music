@@ -81,7 +81,7 @@ It is recommended that you set this byte to zero.
 
 A 16-bit integer that sets the delay before the arpeggiator becomes active.
 
-A value of `0x00` will cause the arp to start immediately.
+Setting `0x02` to a value of `0x00` seems to disable the arpeggiator altogether. Set it to `0x01` or greater to enable this feature. 
 
 ---
 
